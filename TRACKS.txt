@@ -1,0 +1,54 @@
+Músicas fornecidas pelo utilizador. Nomes exatos esperados em gamedata/paprium/:
+
+02 90's Acid Dub Character Select.wav
+08 90's Dance.wav
+42 1988 Commercial.wav
+05 Asian Chill.wav
+31 Bad Dudes vs Paprium.wav
+43 Blade FM.wav
+03 Bone Crusher.wav
+26 Club Shuffle.wav
+23 Continue.wav
+07 Cool Groove.wav
+36 Cyberpunk Ninja.wav
+35 Cyberpunk Funk.wav
+30 Cyber Interlude.wav
+21 Cyborg Invasion.wav
+44 Dark Alley.wav
+29 Dark & Power Mad.wav
+24 Intro.wav
+27 Dark Rock.wav
+04 Drumbass Boss.wav
+45 Dubstep Groove.wav
+15 Electro Acid Funk.wav
+28 Evolve.wav
+33 Funk Enhanced Mix.wav
+41 Game Over.wav
+46 Gothic.wav
+13 Hard Rock.wav
+22 Hardcore BP1.wav
+11 Hardcore BP2.wav
+38 Hardcore BP3.wav
+40 Score.wav
+47 House.wav
+17 Indie Shuffle.wav
+25 Indie Break Beat.wav
+16 Jazzy Shuffle.wav
+19 Neo Metal.wav
+14 Neon Rider.wav
+09 Retro Beat.wav
+20 Sadness.wav
+18 Slow Asian Beat.wav
+48 Slow Mood.wav
+49 Smooth Coords.wav
+10 Spiral.wav
+12 Stage Clear.wav
+32 Summer Breeze.wav
+06 Techno Beats.wav
+50 Tension.wav
+01 Theme of Paprium.wav
+39 Ending.wav
+34 Transe.wav
+37 Urban.wav
+51 Water.wav
+52 Waterfront Beat.wav

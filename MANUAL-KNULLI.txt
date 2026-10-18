@@ -1,0 +1,238 @@
+PAPRIUM H700 — MANUAL KNULLI — alpha 0.5.1 EXPERIMENTAL
+
+ESTADO: PACOTE PREPARADO, AINDA NÃO TESTADO NUM APARELHO COM KNULLI.
+O motor ARM64 foi usado e testado no muOS; isso não comprova compatibilidade
+com o vídeo, áudio, controlos e regresso ao menu do KNULLI. Não há pacote
+pronto para todos os firmwares. Não substituas o firmware para instalar.
+
+1. PACOTE E REQUISITOS
+Usa Paprium-H700-KNULLI-alpha-0.5.1-EXPERIMENTAL.tar.gz.
+Não uses o .muxupd do muOS: é um formato diferente.
+Precisas de KNULLI num H700 ARM64, SDL2 do firmware e PortMaster funcional.
+O executável exige símbolos GLIBC até 2.29. Dependências diretas: libc,
+libm e libdl; SDL2 é aberto dinamicamente. O conversor também é ARM64.
+A compatibilidade real das bibliotecas e drivers ainda precisa de teste.
+
+Pela documentação KNULLI, podes instalar PortMaster em Start → Device
+Settings → Install Portmaster. Atualiza-o antes do teste deste pacote.
+Referência: https://knulli.org/systems/portmaster/
+
+Os dados do jogo não estão no pacote. Reserva pelo menos 3 GB livres depois
+de copiar ROM e MP3 para converter o conjunto de referência (WAV ~2,24 GB).
+A duração de outras faixas altera o espaço necessário. Mantém alimentação.
+
+2. COPIAR O PACOTE PARA O LOCAL CERTO
+Extrai o TAR.GZ no PC. Se o programa de extração produzir primeiro um TAR,
+extrai também o TAR. Copia os dois itens abaixo para a pasta ports dentro
+de roms da partição SHARE do KNULLI:
+  Instalar Paprium.sh
+  paprium-knulli/          [pasta completa, incluindo files e install.sh]
+
+Por SFTP, os caminhos exatos são:
+  /userdata/roms/ports/Instalar Paprium.sh
+  /userdata/roms/ports/paprium-knulli/install.sh
+  /userdata/roms/ports/paprium-knulli/files/Paprium.sh
+  /userdata/roms/ports/paprium-knulli/files/paprium/paprium.aarch64
+
+Pela partilha de rede SHARE, o equivalente é:
+  SHARE/roms/ports/Instalar Paprium.sh
+  SHARE/roms/ports/paprium-knulli/
+
+Pelo leitor de cartões, usa roms/ports na partição de dados SHARE, não a
+partição de arranque. Se o PC não conseguir abrir essa partição, usa SFTP
+ou a partilha de rede; não a reformates para este procedimento.
+O ponto /userdata abstrai o cartão de dados escolhido no KNULLI: o pacote
+não impõe SD1 ou SD2. Atenção: no KNULLI os nomes roms/ports são minúsculos.
+
+3. INSTALAR PELO MENU PORTS
+1) Atualiza a lista de jogos: Start → Game Settings → Update Gamelists,
+   conforme a versão/idioma do firmware.
+2) Entra no menu Ports e abre Instalar Paprium.
+3) Espera a indicação de conclusão. O instalador verifica hashes, firmware,
+   arquitetura e execução básica do binário, e copia apenas o software.
+4) Atualiza novamente a lista de jogos. Deverá surgir Paprium em Ports.
+
+O resultado instalado deve ser:
+  /userdata/roms/ports/Paprium.sh
+  /userdata/roms/ports/paprium/paprium.aarch64
+  /userdata/roms/ports/paprium/paprium-convert.aarch64
+  /userdata/roms/ports/paprium/prepare-music.sh
+  /userdata/roms/ports/paprium/music-tracks.txt
+  /userdata/roms/ports/paprium/licenses/
+  /userdata/roms/ports/paprium/source.tar.gz
+  /userdata/roms/ports/paprium/relink.tar.gz
+
+Não são alterados /usr/bin, custom.sh, knulli.conf ou o catálogo global do
+EmulationStation. Não há instalação de core RetroArch. O lançador usa a
+integração PortMaster para controlos e preparação/limpeza da plataforma.
+Não termina nem reinicia EmulationStation por conta própria.
+
+Se falhar, consulta:
+  /userdata/roms/ports/paprium-knulli/install.log
+O teste --version do instalador não garante que o jogo consiga abrir vídeo
+ou áudio. Fecha o Paprium antes de atualizar uma instalação existente.
+Depois de confirmar a instalação, podes retirar Instalar Paprium.sh e a
+pasta paprium-knulli para deixar apenas o lançador do jogo no menu.
+Conserva o pacote original no PC caso precises de reinstalar.
+
+4. COPIAR OS DADOS DO JOGO
+Cria gamedata e gamedata/paprium dentro da pasta instalada, se necessário.
+Copia a ROM descomprimida, com o nome final exato paprium.bin, para:
+  /userdata/roms/ports/paprium/gamedata/paprium.bin
+  SHARE/roms/ports/paprium/gamedata/paprium.bin
+
+Copia os 52 MP3 com os nomes do apêndice diretamente para:
+  /userdata/roms/ports/paprium/gamedata/paprium/
+  SHARE/roms/ports/paprium/gamedata/paprium/
+
+Exemplo:
+/userdata/roms/ports/paprium/gamedata/paprium/01 Theme of Paprium.mp3
+
+Não copies estes dados para paprium-knulli/files: essa é a origem do
+instalador, não a pasta onde o jogo é executado. Não acrescentes outra
+subpasta ao copiar as músicas. Evita extensões duplicadas ocultas pelo PC.
+Não deixes a ROM comprimida. Não precisas do ficheiro extra paprium.wav.
+
+5. REFERÊNCIA DE COMPATIBILIDADE
+ROM de referência do desenvolvimento no muOS:
+  Nome: paprium.bin
+  Tamanho: 8 388 608 bytes
+  Identificador: T-574120-00
+  SHA-256:
+  f9192ac55b915ac65765688bd4944c98d4ebe2ea994e6d312e2e6e52f7e79d09
+O mesmo conjunto de dados é esperado no KNULLI, mas ainda precisa de teste.
+Um hash diferente significa outra variante, não uma prova automática de
+incompatibilidade. Não alteres cabeçalhos para contornar a identificação.
+Num cliente SSH, podes obter a referência da tua cópia com:
+  sha256sum /userdata/roms/ports/paprium/gamedata/paprium.bin
+
+O apêndice e music-tracks.txt indicam os nomes exatos das 52 faixas. Mantém
+números, espaços e pontuação. O WAV correspondente usa o mesmo nome-base.
+O conversor gera PCM de 16 bits, estéreo, 48 kHz. O núcleo aceita WAV mono
+ou estéreo de 8 a 48 kHz; prefere os WAV de 48 kHz gerados pelo conversor.
+Nomes e formato válidos não garantem o conteúdo correto da música.
+
+6. PRIMEIRO ARRANQUE
+Entra em Ports e abre Paprium (o ficheiro Paprium.sh, não uma pasta).
+O preparador aproveita WAV válidos e converte apenas os que faltarem,
+a partir dos MP3 correspondentes. Se faltar MP3 e WAV de uma faixa, para
+antes da conversão e indica o nome. Com apenas os 52 MP3, espera progressos
+"Converting music 1/52: ..." até terminar. Não desligues durante a operação.
+O jogo começa automaticamente no fim. Não exige Internet, FFmpeg ou Python.
+
+Os MP3 são conservados; os WAV ficam na mesma pasta. No segundo arranque,
+os WAV existentes são verificados e não é necessário voltar a converter.
+Se falhar, corrige a causa e repete. Os WAV válidos concluídos são mantidos.
+Um WAV inválido é preservado: guarda-o fora da pasta e fornece o MP3 para
+o gerar novamente. Um arranque com ecrã preto não confirma uma conversão
+ativa: consulta log.txt e conf/conversion-status.txt.
+
+7. CONTROLOS, SAÍDA E GRAVAÇÕES
+Mapeamento pretendido pelo frontend, ainda por confirmar no KNULLI:
+  Direcional/stick esquerdo: direções
+  Botão de face esquerdo: A da Mega Drive
+  Botão de face inferior: B
+  Botão de face direito: C
+  Botão de face superior: X
+  L1: Y | R1: Z | Start: Start | Select: Mode
+  Select + Start: sair normalmente
+  Select + R1: reset suave
+Se aparecer o minijogo inicial, mantém Select e toca em R1 quando estiver
+jogável. Se não avançar, guarda o log. Reset não é a forma normal de sair.
+O suporte a dois comandos ainda não foi validado fisicamente.
+
+SRAM do jogo:
+  /userdata/roms/ports/paprium/saves/paprium.srm (65 536 bytes)
+O motor verifica alterações a cada 5 segundos e ao sair. Só conserva o
+progresso registado pelo jogo; não há savestates. Fecha antes de copiar ou
+restaurar uma gravação. Não substitui SRAM existente com tamanho inválido.
+
+8. DIAGNÓSTICO E TESTES NECESSÁRIOS
+Log do jogo:
+  /userdata/roms/ports/paprium/log.txt
+Preparação das músicas:
+  /userdata/roms/ports/paprium/conf/conversion-status.txt
+Instalação:
+  /userdata/roms/ports/paprium-knulli/install.log
+
+Paprium não aparece: confirma caminhos e atualiza a lista de jogos.
+Selecionar abre pasta: escolhe Paprium.sh e não a pasta paprium.
+Falta control.txt: instala/atualiza PortMaster do próprio KNULLI.
+Erro GLIBC ou SDL2: essa combinação de firmware/bibliotecas não é
+compatível com o binário. Envia modelo, versão KNULLI e erro exato;
+não copies bibliotecas do muOS por cima das do firmware.
+Falha na conversão: verifica nomes, espaço e integridade do MP3 indicado.
+Vídeo preto, controlos sem resposta, som ausente ou menu que não regressa:
+guarda o log e descreve o comportamento. Estes pontos exigem teste real.
+O pacote não deve ser anunciado como validado no KNULLI até isso acontecer.
+
+Checklist: instalação, conversão completa, vídeo, seis botões, música e
+efeitos, saída Select+Start, regresso a Ports, reabertura e SRAM persistente.
+Para teste limpo, com o jogo fechado, remove apenas Paprium.sh e a pasta
+paprium instalada. Isso elimina dados e gravações dessa instalação;
+não apagues ports nem a partição SHARE. Depois reinstala e fornece apenas
+ROM e MP3 para voltar a testar a conversão.
+
+9. LICENÇAS E DISTRIBUIÇÃO
+Este projeto não é oficial nem aprovado por KNULLI, PortMaster, Genesis
+Plus GX ou pelos autores do jogo. Usa emulação integrada.
+As condições não comerciais do núcleo e as licenças individuais das
+bibliotecas estão em licenses. Conserva source.tar.gz e relink.tar.gz com
+os executáveis. Não distribuas ROM, música ou gravações pessoais no pacote.
+Não há inclusão automática no catálogo oficial PortMaster.
+
+APÊNDICE — NOMES EXATOS DOS 52 MP3
+Em /userdata/roms/ports/paprium/gamedata/paprium/.
+
+02 90's Acid Dub Character Select.mp3
+08 90's Dance.mp3
+42 1988 Commercial.mp3
+05 Asian Chill.mp3
+31 Bad Dudes vs Paprium.mp3
+43 Blade FM.mp3
+03 Bone Crusher.mp3
+26 Club Shuffle.mp3
+23 Continue.mp3
+07 Cool Groove.mp3
+36 Cyberpunk Ninja.mp3
+35 Cyberpunk Funk.mp3
+30 Cyber Interlude.mp3
+21 Cyborg Invasion.mp3
+44 Dark Alley.mp3
+29 Dark & Power Mad.mp3
+24 Intro.mp3
+27 Dark Rock.mp3
+04 Drumbass Boss.mp3
+45 Dubstep Groove.mp3
+15 Electro Acid Funk.mp3
+28 Evolve.mp3
+33 Funk Enhanced Mix.mp3
+41 Game Over.mp3
+46 Gothic.mp3
+13 Hard Rock.mp3
+22 Hardcore BP1.mp3
+11 Hardcore BP2.mp3
+38 Hardcore BP3.mp3
+40 Score.mp3
+47 House.mp3
+17 Indie Shuffle.mp3
+25 Indie Break Beat.mp3
+16 Jazzy Shuffle.mp3
+19 Neo Metal.mp3
+14 Neon Rider.mp3
+09 Retro Beat.mp3
+20 Sadness.mp3
+18 Slow Asian Beat.mp3
+48 Slow Mood.mp3
+49 Smooth Coords.mp3
+10 Spiral.mp3
+12 Stage Clear.mp3
+32 Summer Breeze.mp3
+06 Techno Beats.mp3
+50 Tension.mp3
+01 Theme of Paprium.mp3
+39 Ending.mp3
+34 Transe.mp3
+37 Urban.mp3
+51 Water.mp3
+52 Waterfront Beat.mp3

@@ -1,0 +1,36 @@
+Paprium H700 standalone integration, VVmImo, 2026.
+Unofficial derivative of Genesis Plus GX PUNCHiUM; not endorsed by WaterMelon,
+Genesis Plus GX, PortMaster, muOS or KNULLI.
+
+Genesis Plus GX and project-specific integration: upstream non-commercial
+license, reproduced in Genesis-Plus-GX.txt and LICENSE.txt. No commercial
+redistribution or commercial use of the combined port is granted.
+Individual upstream components retain their own licenses and notices:
+- Nuked OPN2 / ym3438: Alexey Khokholov (Nuke.YKT), LGPL-2.1-or-later.
+- blip_buf, md_ntsc, sms_ntsc: Shay Green, LGPL-2.1-or-later, modified by
+  EkeEke and upstream fork authors. Complete license text included.
+- minimp3: lieff and contributors, CC0; notice in minimp3.h/minimp3_ex.h.
+- dr_wav: David Reid and contributors, MIT-0 or public-domain option;
+  full notice at the end of dr_wav.h.
+- stb_vorbis: Sean Barrett and contributors, MIT/public-domain dual option;
+  full notice in stb_vorbis_my.c.
+- SDL2: Sam Lantinga and contributors, zlib license. Headers and sources
+  included; runtime shared library is supplied by firmware, not bundled.
+- zlib 1.3.1: Jean-loup Gailly / Mark Adler and contributors, zlib license;
+  linked statically, full sources included.
+- Further upstream notices, including Musashi/MAME and auxiliary code,
+  remain in the complete corresponding source distribution.
+
+The non-commercial project terms do not replace the licenses or rights of
+individual LGPL/permissive components. For LGPL-covered components,
+modification for the user's own use and reverse engineering to debug such
+modifications are permitted. Corresponding modified library sources,
+application sources, build instructions and relinkable objects are supplied
+in source.tar.gz and relink.tar.gz with every binary package.
+Replace/recompile LGPL objects as described in relink/README.txt.
+
+ROM, MP3, game WAV, BIOS files, game artwork and personal saves are excluded.
+The only MP3/WAV files in source.tar.gz are the original synthetic converter
+fixtures under tests/converter-fixtures; they contain no game audio.
+Paprium and associated game assets remain the property of their respective
+rights holders. This software license grants no rights to game data.
