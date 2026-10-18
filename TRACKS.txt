@@ -1,4 +1,4 @@
-Músicas fornecidas pelo utilizador. Nomes exatos esperados em gamedata/paprium/:
+User-supplied music. Exact filenames expected in gamedata/paprium/:
 
 02 90's Acid Dub Character Select.wav
 08 90's Dance.wav

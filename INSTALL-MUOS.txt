@@ -1,0 +1,249 @@
+PAPRIUM H700 — muOS INSTALLATION GUIDE — alpha 0.5.2
+
+English documentation and installer-language revision of 0.5.1. Audio
+behavior is unchanged. Experimental integrated emulation, not a native
+game port or RetroArch core. User-tested on RG40XX H, H700 ARM64, 1 GB,
+muOS 2601.0. Full-game and two-player testing remain incomplete.
+No game ROM, music or personal saves are included.
+
+1. CHOOSE THE DOWNLOAD
+Archive Manager: Paprium-H700-muOS-alpha-0.5.2.muxupd
+Manual extraction: paprium-h700-alpha-0.5.2.zip
+Do not use the KNULLI package on muOS. Do not rename ZIP to .muxupd:
+the internal layouts are different.
+
+2. REQUIREMENTS AND CARD PATHS
+Install/update PortMaster for your firmware. Requires ARM64, firmware SDL2,
+libc/libm/libdl and GLIBC symbols up to 2.29. No RetroArch core, FFmpeg or
+Python installation is needed on the device.
+
+The .muxupd targets /mnt/union/ROMS/Ports, muOS's merged content path.
+It does not require SD2. Physical paths are:
+  SD1: /mnt/mmc/ROMS/Ports/
+  SD2: /mnt/sdcard/ROMS/Ports/
+The card holding the installer does NOT select its destination: unionfs
+write rules decide the physical card. Use manual extraction to choose a
+card explicitly. Avoid duplicate Paprium installations on both cards.
+The launcher resolves the physical location, checking SD2 then SD1, as in
+the observed PortMaster integration. Music is read from the physical path
+because a streaming-read stall was previously observed through unionfs.
+Complete installation/launch testing on both cards is still needed.
+
+Allow at least 3 GB free AFTER copying ROM and MP3 files for the reference
+soundtrack. Generated WAV files occupy about 2.24 GB; other track lengths
+may require more. Keep sufficient battery or external power for conversion.
+
+3. ARCHIVE MANAGER INSTALLATION
+Card reader:
+1) Shut down normally, remove the card and connect it to your PC.
+2) Copy the .muxupd into ARCHIVE at the card root, for example:
+   X:\ARCHIVE\Paprium-H700-muOS-alpha-0.5.2.muxupd
+   X: means the actual card drive letter, not a fixed drive.
+3) Safely eject, put the card back and power on.
+
+SFTP alternatives, using your device IP and configured credentials:
+  /mnt/mmc/ARCHIVE/Paprium-H700-muOS-alpha-0.5.2.muxupd  (SD1)
+  /mnt/sdcard/ARCHIVE/Paprium-H700-muOS-alpha-0.5.2.muxupd (SD2)
+Wait for the transfer to finish.
+
+Open Applications → Archive Manager, select the 0.5.2 archive and install.
+Wait for completion before returning to the menu. Do not manually extract
+the .muxupd at the card root: Archive Manager handles its destination.
+
+4. MANUAL INSTALLATION TO A SPECIFIC CARD
+Extract paprium-h700-alpha-0.5.2.zip directly into ROMS/Ports on your chosen
+card. These must be side by side:
+  X:\ROMS\Ports\Paprium.sh
+  X:\ROMS\Ports\paprium\paprium.aarch64
+Do not leave an extra version-named directory around them. This method
+does not also need the .muxupd. Do not copy the development workspace.
+
+5. EXACT GAME-DATA DESTINATIONS
+Find the installed paprium folder containing paprium.aarch64. Supply every
+file to THAT installation; do not split executables and data across cards.
+Create gamedata and gamedata/paprium if missing.
+
+Uncompressed ROM, named exactly paprium.bin:
+  PC:   X:\ROMS\Ports\paprium\gamedata\paprium.bin
+  SFTP: <PORTS>/paprium/gamedata/paprium.bin
+All 52 correctly named MP3 files, directly inside:
+  PC:   X:\ROMS\Ports\paprium\gamedata\paprium\
+  SFTP: <PORTS>/paprium/gamedata/paprium/
+
+<PORTS> means /mnt/mmc/ROMS/Ports (SD1) or /mnt/sdcard/ROMS/Ports (SD2),
+according to the physical installation. X: is that same card.
+Example on SD2:
+/mnt/sdcard/ROMS/Ports/paprium/gamedata/paprium/01 Theme of Paprium.mp3
+
+Preserve spaces, numbers and punctuation from the appendix. Copy the MP3
+files themselves, without adding another nested music folder. Watch for
+hidden extensions producing paprium.bin.bin or .mp3.mp3. Do not leave the
+ROM compressed or put game data in ARCHIVE. A separate paprium.wav is not
+required and does not replace the 52 named tracks. Matching valid WAV files
+may be supplied instead of MP3 files.
+
+6. REFERENCE DATA AND COMPATIBILITY
+Reference ROM used during development:
+  Name: paprium.bin
+  Exact size: 8,388,608 bytes (8 MiB)
+  Product identifier: T-574120-00
+  SHA-256:
+  f9192ac55b915ac65765688bd4944c98d4ebe2ea994e6d312e2e6e52f7e79d09
+A different hash identifies different data, not automatic incompatibility;
+that revision needs testing. Renaming or changing another ROM's header
+does not establish compatibility. In PowerShell, replace X: appropriately:
+  (Get-Item -LiteralPath 'X:\ROMS\Ports\paprium\gamedata\paprium.bin').Length
+  Get-FileHash -Algorithm SHA256 -LiteralPath 'X:\ROMS\Ports\paprium\gamedata\paprium.bin'
+
+TRACKS.txt and music-tracks.txt list all expected names. The converter
+produces PCM16 stereo WAV at 48 kHz. The core accepts mono/stereo WAV at
+8–48 kHz; prefer 48 kHz. Names and format do not prove the music content.
+
+7. FIRST LAUNCH AND AUTOMATIC CONVERSION
+In Ports, select the FILE Paprium.sh, possibly displayed as Paprium with
+extensions hidden. Selecting the paprium folder only opens that folder.
+
+Preparation checks all 52 tracks first. Valid existing WAV files are
+reused. Each missing WAV needs an MP3 with the same base name. If both are
+missing, preparation stops and identifies the track before converting.
+With 52 MP3 files and no WAV files, expect:
+  Converting music 1/52: ...
+Keep power connected and wait. Duration depends on the card and files.
+The game starts automatically afterward; no Internet, FFmpeg or Python
+is required for conversion.
+
+MP3 files are retained. WAV files are written beside them. Later launches
+check and reuse completed WAV files. If preparation fails, correct the
+cause and retry; valid completed WAV files are preserved. An invalid WAV
+is not overwritten: move it outside the music directory, provide its MP3
+and relaunch to regenerate that track. Updating to 0.5.2 does not require
+converting existing valid music again.
+
+8. INITIAL MINIGAME AND CONTROLS
+If the initial minigame appears, hold Select and tap R1 once it is playable
+to request a soft reset. If it does not progress, preserve the log.
+Running the minigame alone does not prove full-game compatibility.
+
+Physical input                    Mega Drive / function
+D-pad / left stick                Directions
+Left / bottom / right / top face   A / B / C / X
+L1 / R1                           Y / Z
+Start / Select                    Start / Mode
+Select + Start                    Exit normally to muOS
+Select + R1                       Soft reset; not the normal exit command
+
+Physical positions avoid confusion between printed button labels.
+Two controllers are supported in code but need physical testing.
+Diagnostic keyboard: arrows, A/S/D, Z/X/C, Enter, right Shift; Escape exits,
+F1 requests soft reset.
+
+9. SAVES, UPDATING AND CLEAN TESTS
+Save: <PORTS>/paprium/saves/paprium.srm, exactly 65,536 bytes.
+Changed SRAM is checked every five seconds and on normal exit. Only
+progress saved by the game is retained; there are no arbitrary-moment
+savestates. Close the game before copying/restoring SRAM. Existing SRAM
+with an invalid size is rejected without overwriting it.
+
+To update, close the game and install over the same location. Public
+packages contain no game data or saves to overwrite. An SRAM copy before
+updating is optional.
+For a genuinely clean test, close the game and remove ONLY Paprium.sh and
+the installed paprium folder. This removes that installation's ROM, music,
+WAV files, configuration and saves. Do not delete the whole Ports folder.
+Reinstall, supply ROM and 52 MP3 files, and check conversion, launch,
+controls, audio, normal exit and a second launch without reconversion.
+
+10. AUDIO AND TROUBLESHOOTING
+Audio behavior is unchanged from 0.5.1: 5 Hz DC rejection, interpolated ROM
+PCM effects, about 50 ms of initial queue reserve, corrected per-voice gain
+and a 6 kHz effects/echo reconstruction filter. Music bypasses that effects
+filter. Original 4/8-bit effects still limit fidelity. User-confirmed audio
+improvement does not prove exact reproduction throughout the game.
+Comparison options: PAPRIUM_SFX_FILTER=0 bypasses the effects filter;
+PAPRIUM_LEGACY_AUDIO_FILTER=1 enables the old global filter, off by default.
+Normal installation/play does not require editing the launcher.
+
+Folder opens: select the Paprium.sh file instead.
+No Paprium entry: verify installation and physical paths.
+Missing control.txt: install/update PortMaster for muOS.
+Missing paprium.bin: check section 5, including hidden extensions.
+Missing music: supply the exact named MP3 or valid matching WAV.
+Conversion failed: check free space, MP3 integrity and logs.
+Invalid WAV: preserve it outside the folder and regenerate from its MP3.
+Freeze: try Select + Start; recover through the muOS menu if responsive.
+After recovery, preserve the log before relaunching. Do not assume all
+freezes have the same cause as the earlier unionfs streaming-read stall.
+
+Logs:
+  <PORTS>/paprium/log.txt
+  <PORTS>/paprium/conf/conversion-status.txt
+"Paprium physical data path" should show physical SD1 or SD2 storage.
+Reports should include model, firmware, package version, ROM size/hash,
+track/scene and error. Do not send ROM, music, passwords or personal saves.
+A new launch replaces the previous game log.
+
+11. LICENSES AND REDISTRIBUTION
+Unofficial project, not endorsed by the game rights holders, Genesis Plus
+GX, muOS or PortMaster. Supply your own lawful game data. The core has
+non-commercial terms; libraries retain their own licenses. Keep notices,
+licenses, source.tar.gz and relink.tar.gz with binary redistribution.
+Corresponding sources and objects permit rebuilding/replacing LGPL
+components. Read LICENSE.txt and THIRD-PARTY.txt. Game ROM/music, BIOS,
+artwork and personal saves must not be added to public packages. This
+release does not imply official PortMaster catalogue inclusion.
+
+APPENDIX — EXACT NAMES OF ALL 52 MP3 FILES
+Place in gamedata/paprium/. Matching WAV names replace .mp3 with .wav.
+
+02 90's Acid Dub Character Select.mp3
+08 90's Dance.mp3
+42 1988 Commercial.mp3
+05 Asian Chill.mp3
+31 Bad Dudes vs Paprium.mp3
+43 Blade FM.mp3
+03 Bone Crusher.mp3
+26 Club Shuffle.mp3
+23 Continue.mp3
+07 Cool Groove.mp3
+36 Cyberpunk Ninja.mp3
+35 Cyberpunk Funk.mp3
+30 Cyber Interlude.mp3
+21 Cyborg Invasion.mp3
+44 Dark Alley.mp3
+29 Dark & Power Mad.mp3
+24 Intro.mp3
+27 Dark Rock.mp3
+04 Drumbass Boss.mp3
+45 Dubstep Groove.mp3
+15 Electro Acid Funk.mp3
+28 Evolve.mp3
+33 Funk Enhanced Mix.mp3
+41 Game Over.mp3
+46 Gothic.mp3
+13 Hard Rock.mp3
+22 Hardcore BP1.mp3
+11 Hardcore BP2.mp3
+38 Hardcore BP3.mp3
+40 Score.mp3
+47 House.mp3
+17 Indie Shuffle.mp3
+25 Indie Break Beat.mp3
+16 Jazzy Shuffle.mp3
+19 Neo Metal.mp3
+14 Neon Rider.mp3
+09 Retro Beat.mp3
+20 Sadness.mp3
+18 Slow Asian Beat.mp3
+48 Slow Mood.mp3
+49 Smooth Coords.mp3
+10 Spiral.mp3
+12 Stage Clear.mp3
+32 Summer Breeze.mp3
+06 Techno Beats.mp3
+50 Tension.mp3
+01 Theme of Paprium.mp3
+39 Ending.mp3
+34 Transe.mp3
+37 Urban.mp3
+51 Water.mp3
+52 Waterfront Beat.mp3
